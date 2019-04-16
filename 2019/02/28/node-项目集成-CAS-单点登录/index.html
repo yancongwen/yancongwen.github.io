@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yancongwen&#39;blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      node 项目集成 CAS 单点登录 | 码字仓颉
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>码字仓颉</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>node 项目集成 CAS 单点登录</h2>
+  <p class="post-date">2019-02-28</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="node-项目集成-CAS-单点登录"><a href="#node-项目集成-CAS-单点登录" class="headerlink" title="node 项目集成 CAS 单点登录"></a>node 项目集成 CAS 单点登录</h1><blockquote>
+<p>最近接到一个新的需求，将现有的 node + vue 前后端分离的项目和公司已有的 CAS 单点登录系统对接，即需要删除项目中已有的登录认证机制，和 CAS 集成。</p>
+</blockquote>
+<h2 id="一、-什么是单点登录（SSO）"><a href="#一、-什么是单点登录（SSO）" class="headerlink" title="一、 什么是单点登录（SSO）"></a>一、 什么是单点登录（SSO）</h2><p>假设用户 X 需同时登录站点 A 和站点 B，这两个站点之间其实是有关联性的，但是如果用户认证数据不通用，那将需要注册或登录两次。<br>单点登录系统（Single Sign On，简称 SSO）就是为了解决这种场景的问题，建立一种用户认证中心，只要经过这个中心注册或登录了某一站点服务的用户，总是能够认证登录这个中心所授权的其他所有服务。</p>
+<ul>
+<li><p>登录<br> 相比于单系统登录，SSO 需要一个独立的认证中心，只有认证中心能接受用户的用户名密码等安全信息，其他系统不提供登录入口，只接受认证中心的间接授权。间接授权通过令牌实现，sso 认证中心验证用户的用户名密码没问题，创建授权令牌，在接下来的跳转过程中，授权令牌作为参数发送给各个子系统，子系统拿到令牌，即得到了授权，可以借此创建局部会话，局部会话登录方式与单系统的登录方式相同。</p>
+</li>
+<li><p>注销<br> 在一个子系统中注销，所有子系统的会话都将被销毁。</p>
+</li>
+</ul>
+<h2 id="二、-什么是-CAS"><a href="#二、-什么是-CAS" class="headerlink" title="二、 什么是 CAS"></a>二、 什么是 CAS</h2><p>CAS (Central Authentication Service) 是耶鲁 Yale 大学发起的一个 java 开源项目，旨在为 Web 应用系统提供一种可靠的单点登录解决方案（ Web SSO ），<a href="https://github.com/apereo/cas" target="_blank" rel="noopener">github 地址</a>。CAS 作为一种单点登录框架，后端可配置不同的用户数据库，支持自定义验证或加密逻辑，并提供不同的协议用于与业务 server(cas-client)间的通信。CAS 的源码是由 java 写的，因此对于 java 的 web 项目天生友好。当然只要实现 CAS 相关协议的 client，无论是哪种语言实现的，都能集成到 CAS 认证框架中。CAS 的部署请参考<a href="https://blog.csdn.net/zzq900503/article/details/54693267" target="_blank" rel="noopener">这里</a><br>从结构上看， CAS 包含两个部分： CAS Server 和 CAS Client 。</p>
+<ul>
+<li>CAS Server<br> CAS Server 需要独立部署，主要负责对用户的认证工作， 它会处理用户名 / 密码等凭证 (Credentials)</li>
+<li>CAS Client<br> CAS Client 部署在客户端， 负责处理 对本地 Web 应用（客户端）受保护资源的访问请求，并且当需要对请求方进行身份认证时，重定向到 CAS Server 进行认证 。CAS Client 负责部署在客户端（Web 应用），原则上， CAS Client 的部署意味着，当有对本地 Web 应用的受保护资源的访问请求，并且需要对请求方进行身份认证， Web 应用不再接受任何的用户名密码等类似的 Credentials ，而是重定向到 CAS Server 进行认证。<br> 通常单点登陆都会涉及到对已有系统的改造。所以，client 端的侵入性就变的很重要。侵入性越小，越容易部署和测试。CAS 框架的优点之一就在于它的 client 端对应用系统的侵入性比较小。对于 Java 的 Web 项目来说，你只需要在 web.xml 里面添加一个 filter，拷贝 CAS client 的 jar 包到应用系统，然后改造登陆认证过程即可。</li>
+</ul>
+<h2 id="三、-node-项目集成-CAS"><a href="#三、-node-项目集成-CAS" class="headerlink" title="三、 node 项目集成 CAS"></a>三、 node 项目集成 CAS</h2><p>首先介绍一下项目架构，项目前端采用 Vue 开发，服务端采用 node + express 开发。项目最终上线部署时，前端打包后放在服务端的 <code>/public</code> 目录下，即采用 express 静态服务功能。<br>开始我还是固有的思维，考虑在前端实现单点登录的集承，用户登录不都是在前端做的吗，调用服务端接口，CAS 也提供了一些列的 Restful Api，然而当我去实现的时候却相当麻烦，还会有跨域的问题。然后想到了可否直接在服务端控制访问权限？于是网上搜索一番，终于找到了 <a href="https://github.com/TencentWSRD/connect-cas2" target="_blank" rel="noopener">connect-cas2</a> node 中间件，其实它就是 CAS Client 的 node 实现，正好符合我的项目场景。connect-cas2 的使用也比较简单，具体请看官方文档，直接抄文档示例就可以了。以下是主要代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">var</span> ConnectCas = <span class="built_in">require</span>(<span class="string">'connect-cas2'</span>)</span><br><span class="line"><span class="keyword">var</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>)</span><br><span class="line"><span class="keyword">var</span> session = <span class="built_in">require</span>(<span class="string">'express-session'</span>)</span><br><span class="line"><span class="keyword">var</span> cookieParser = <span class="built_in">require</span>(<span class="string">'cookie-parser'</span>)</span><br><span class="line"><span class="keyword">var</span> MemoryStore = <span class="built_in">require</span>(<span class="string">'session-memory-store'</span>)(session)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> app = express()</span><br><span class="line"></span><br><span class="line">app.use(cookieParser())</span><br><span class="line">app.use(</span><br><span class="line">  session(&#123;</span><br><span class="line">    name: <span class="string">'NSESSIONID'</span>,</span><br><span class="line">    secret: <span class="string">'Hello I am a long long long secret'</span>,</span><br><span class="line">    resave: <span class="literal">true</span>,</span><br><span class="line">    saveUninitialized: <span class="literal">true</span>,</span><br><span class="line">    store: <span class="keyword">new</span> MemoryStore()</span><br><span class="line">  &#125;)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> casClient = <span class="keyword">new</span> ConnectCas(&#123;</span><br><span class="line">  debug: <span class="literal">true</span>,</span><br><span class="line">  ignore: [<span class="regexp">/\/ignore/</span>],</span><br><span class="line">  match: [],</span><br><span class="line">  servicePrefix: <span class="string">'http://localhost:3000'</span>,</span><br><span class="line">  serverPath: <span class="string">'http://your-cas-server.com'</span>,</span><br><span class="line">  paths: &#123;</span><br><span class="line">    validate: <span class="string">'cas/validate'</span>,</span><br><span class="line">    serviceValidate: <span class="string">'cas/serviceValidate'</span>,</span><br><span class="line">    login: <span class="string">'cas/login'</span>,</span><br><span class="line">    logout: <span class="string">'cas/logout'</span>,</span><br><span class="line">    proxy: <span class="string">''</span>,</span><br><span class="line">    proxyCallback: <span class="string">''</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.use(casClient.core())</span><br><span class="line">app.use(bodyParser.json())</span><br><span class="line">app.use(bodyParser.urlencoded(&#123; <span class="attr">extended</span>: <span class="literal">true</span> &#125;))</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/logout'</span>, casClient.logout())</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!req.session.cas.user) &#123;</span><br><span class="line">    <span class="keyword">return</span> next()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> username = req.session.cas.user</span><br><span class="line">  <span class="keyword">return</span> res.send(</span><br><span class="line">    <span class="string">'&lt;p&gt;You are logged in. Your username is '</span> +</span><br><span class="line">      username +</span><br><span class="line">      <span class="string">'. &lt;a href="/logout"&gt;Log Out&lt;/a&gt;&lt;/p&gt;'</span></span><br><span class="line">  )</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/api'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> res.send(<span class="string">'hi'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzU5NTAzNjM0Mw==&amp;mid=2247485480&amp;idx=2&amp;sn=5690b9f36f332bf4e350190ee8bd145f&amp;chksm=fe7959f0c90ed0e600f597c4224a4a9e6c853a193c394e126bad53c80de95be40fd6117194bf&amp;scene=21" target="_blank" rel="noopener">单点登录原理与简单实现</a></li>
+<li><a href="https://www.imooc.com/article/48995" target="_blank" rel="noopener">基于 CAS 单点登录的前后端分离架构说明</a></li>
+<li><a href="https://blog.csdn.net/xiamiflying/article/details/82794422" target="_blank" rel="noopener">单点登录终极方案之 CAS 应用及原理</a></li>
+<li><a href="https://blog.csdn.net/zzq900503/article/details/54646828" target="_blank" rel="noopener">单点登录(一)-单点登录 SSO 的介绍和 CAS+选型</a></li>
+<li><a href="https://github.com/TencentWSRD/connect-cas2/blob/master/README.zh.md" target="_blank" rel="noopener">connect-cas2 文档</a></li>
+<li><a href="https://www.jianshu.com/p/097f60be55f0" target="_blank" rel="noopener">基于 node.js 的 sso(单点登录-客户端校验)</a></li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Node.js">
+    <span class="tag-code">Node.js</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/02/05/四大WebGIS地图引擎的对比选择/">
+        <span class="nav-arrow">← </span>
+        
+          四大WebGIS地图引擎的对比选择
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2019/04/01/Mongodb-基本使用/">
+        
+           Mongodb 基本使用
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    <!-- 评论系统 START-->
+      <!-- 畅言评论 -->
+      <div id="SOHUCS" sid="node 项目集成 CAS 单点登录"></div> 
+    
+      <!-- No Comment -->
+    
+    <!-- 评论系统 END-->
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#node-项目集成-CAS-单点登录"><span class="toc-nav-text">node 项目集成 CAS 单点登录</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#一、-什么是单点登录（SSO）"><span class="toc-nav-text">一、 什么是单点登录（SSO）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#二、-什么是-CAS"><span class="toc-nav-text">二、 什么是 CAS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#三、-node-项目集成-CAS"><span class="toc-nav-text">三、 node 项目集成 CAS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考"><span class="toc-nav-text">参考</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://blog.yancongwen.com/2019/02/28/node-项目集成-CAS-单点登录/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "node 项目集成 CAS 单点登录",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+<script type="text/javascript"> 
+(function(){
+    // 畅言
+    var appid = 'cytStL3tK'; 
+    var conf = 'prod_f38bea1a135accadbdde83654e7d9c10'; 
+    var width = window.innerWidth || document.documentElement.clientWidth; 
+    if (width < 960) { 
+    window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); 
+</script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a><br>
+    &copy;2016-2019 YanCongwen | 豫ICP备17011179号
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

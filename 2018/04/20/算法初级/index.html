@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yancongwen&#39;blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      常见排序算法 | 码字仓颉
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>码字仓颉</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>常见排序算法</h2>
+  <p class="post-date">2018-04-20</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><blockquote>
+<p>排序是开发中十分常见且核心的操作，虽说实际项目中很小几率会需要我们手动实现，但是了解这些精妙的思想对我们还是大有裨益的。本文简单总结下最基础的几类算法。<br>这里首先推荐一个数据结构和算法动态可视化网站：<a href="https://visualgo.net/zh" target="_blank" rel="noopener">https://visualgo.net/zh</a>    </p>
+</blockquote>
+<h2 id="0-概述"><a href="#0-概述" class="headerlink" title="0. 概述"></a>0. 概述</h2><ul>
+<li><p>十种常见排序算法可以分为两大类：</p>
+<ul>
+<li><strong>非线性时间比较类排序</strong>：通过比较来决定元素间的相对次序，由于其时间复杂度不能突破O(nlogn)，因此称为非线性时间比较类排序。</li>
+<li><strong>线性时间非比较类排序</strong>：不通过比较来决定元素间的相对次序，它可以突破基于比较排序的时间下界，以线性时间运行，因此称为线性时间非比较类排序。<br><img src="https://img.yancongwen.cn/18-7-29/36420106.jpg" alt></li>
+</ul>
+</li>
+<li><p>算法复杂度<br><img src="https://img.yancongwen.cn/18-7-29/50241781.jpg" alt></p>
+</li>
+<li><p>相关概念</p>
+<ul>
+<li><strong>时间复杂度</strong>：对排序数据的总的操作次数。反映当n变化时，操作次数呈现什么规律。</li>
+<li><strong>空间复杂度</strong>：是指算法在计算机内执行时所需存储空间的度量，它也是数据规模n的函数。 </li>
+<li><strong>稳定</strong>：如果a原本在b前面，而a=b，排序之后a仍然在b的前面。</li>
+<li><strong>不稳定</strong>：如果a原本在b的前面，而a=b，排序之后 a 可能会出现在 b 的后面。</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-冒泡排序（Bubble-Sort）"><a href="#1-冒泡排序（Bubble-Sort）" class="headerlink" title="1. 冒泡排序（Bubble Sort）"></a>1. 冒泡排序（Bubble Sort）</h2><ul>
+<li>思想<br>  对相邻的元素进行两两比较，顺序相反则进行交换，这样，每一趟会将最小或最大的元素“浮”到顶端，最终达到完全有序。<br>  在冒泡排序的过程中，如果某一趟执行完毕，没有做任何一次交换操作，比如数组<code>[5,4,1,2,3]</code>，执行了两次冒泡之后变为<code>[1,2,3,4,5]</code>。此时，再执行第三次循环后，一次交换都没有做，这就说明剩下的序列已经是有序的，排序提前完成。<br><img src="https://img.yancongwen.cn/18-7-29/39893856.jpg" alt><br><img src="https://img.yancongwen.cn/18-4-25/13811645.jpg" alt="冒泡排序示例"></li>
+<li>算法分析<ul>
+<li>时间复杂度：Ο(n^2)</li>
+<li>空间复杂度：Ο(1)</li>
+</ul>
+</li>
+<li>JS实现    <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bubbleSort</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> len = arr.length;</span><br><span class="line">  <span class="keyword">var</span> i, j, temp, bSwap;</span><br><span class="line">  <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;len<span class="number">-1</span>; i++)&#123;</span><br><span class="line">    bSwap = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;len-i<span class="number">-1</span>; j++)&#123;</span><br><span class="line">      <span class="keyword">if</span>(arr[j]&gt;arr[j+<span class="number">1</span>])&#123;</span><br><span class="line">        temp = arr[j];</span><br><span class="line">        arr[j] = arr[j+<span class="number">1</span>];</span><br><span class="line">        arr[j+<span class="number">1</span>] = temp;</span><br><span class="line">        bSwap = <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 用于判断此轮循环有没有做交换，如果没有交换，说明数组已经是有序的了，排序完成</span></span><br><span class="line">    <span class="keyword">if</span> (!bSwap)&#123;</span><br><span class="line">    	<span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  交换两个数值的简便方式，接下来的代码就采用此方式：</span></span><br><span class="line"><span class="comment">  [a,b] = [b,a];	</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="2-快速排序（Quick-Sort）"><a href="#2-快速排序（Quick-Sort）" class="headerlink" title="2. 快速排序（Quick Sort）"></a>2. 快速排序（Quick Sort）</h2><ul>
+<li>思想<br>  通过一趟排序将待排记录分隔成独立的两部分，其中一部分记录的关键字均比另一部分的关键字小，则可分别对这两部分记录继续进行排序，以达到整个序列有序。<br> 快速排序使用分治法来把一个串（list）分为两个子串（sub-lists）。具体算法描述如下：<ul>
+<li>1、从数列中挑出一个元素，称为 “基准”；</li>
+<li>2、重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置，这个称为分区操作；</li>
+<li>3、对每个分区不断重复第一步和第二步，直到所有子集只剩下一个元素为止。<br><img src="https://img.yancongwen.cn/18-7-29/2970506.jpg" alt="快速排序"></li>
+</ul>
+</li>
+</ul>
+<h2 id="3-插入排序"><a href="#3-插入排序" class="headerlink" title="3. 插入排序"></a>3. 插入排序</h2><h2 id="4-希尔排序"><a href="#4-希尔排序" class="headerlink" title="4. 希尔排序"></a>4. 希尔排序</h2><h2 id="5-选择排序"><a href="#5-选择排序" class="headerlink" title="5. 选择排序"></a>5. 选择排序</h2><h2 id="6-归并排序"><a href="#6-归并排序" class="headerlink" title="6. 归并排序"></a>6. 归并排序</h2><h2 id="7-堆排序"><a href="#7-堆排序" class="headerlink" title="7. 堆排序"></a>7. 堆排序</h2><h2 id="8-计数排序（Count-Sort）"><a href="#8-计数排序（Count-Sort）" class="headerlink" title="8. 计数排序（Count Sort）"></a>8. 计数排序（Count Sort）</h2><ul>
+<li>简介<br>  计数排序不是基于比较的排序算法。它的优势在于在对一定范围内的整数排序时，快于任何比较排序算法。作为一种线性时间复杂度的排序，计数排序要求输入的数据必须是有确定范围的整数。</li>
+<li>思想<ul>
+<li>1、找出待排序的数组中最大和最小的元素；    </li>
+<li>2、统计数组中每个值为i的元素出现的次数，存入数组C的第i项；</li>
+<li>3、对所有的计数累加（从C中的第一个元素开始，每一项和前一项相加）；</li>
+<li>4、反向填充目标数组：将每个元素i放在新数组的第C(i)项，每放一个元素就将C(i)减去1。<br><img src="https://img.yancongwen.cn/18-7-29/43783126.jpg" alt="计数排序过程动画"><br><img src="https://img.yancongwen.cn/18-7-29/12897429.jpg" alt="基数排序示例说明"></li>
+</ul>
+</li>
+<li><p>算法分析</p>
+<ul>
+<li>时间复杂度：Ο(n+k)，k为待排序数的范围，n为数组长度</li>
+<li>空间复杂度：Ο(k)</li>
+<li>稳定性：稳定</li>
+<li>要求：数值较小的整数数组。计数排序是一种以空间换时间的排序算法，并且只适用于待排序列中所有的数较为集中时。当数组较为分散时，比如一组序列中的数据为<code>0 1 2 3 4 999</code>就得开辟1000个辅助空间，就很不划算。</li>
+</ul>
+</li>
+<li><p>JS实现</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">countingSort</span>(<span class="params">arr</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> len = arr.length,</span><br><span class="line">      Result = [],</span><br><span class="line">      Count = [],</span><br><span class="line">      min = max = arr[<span class="number">0</span>];</span><br><span class="line">  <span class="built_in">console</span>.time(<span class="string">'countingSort waste time:'</span>);</span><br><span class="line">  <span class="comment">/*查找最大最小值,并将arr数置入Count数组中,统计出现次数*/</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">    Count[arr[i]] = Count[arr[i]] ? Count[arr[i]] + <span class="number">1</span> : <span class="number">1</span>;</span><br><span class="line">    min = min &lt;= arr[i] ? min : arr[i];</span><br><span class="line">    max = max &gt;= arr[i] ? max : arr[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(Count)</span><br><span class="line">  <span class="comment">/*从最小值-&gt;最大值,将计数逐项相加*/</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> j = min;j&lt;max;j++)&#123;</span><br><span class="line">    Count[j+<span class="number">1</span>] = (Count[j+<span class="number">1</span>]||<span class="number">0</span>)+(Count[j]||<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/*Count中,下标为arr数值,数据为arr数值出现次数;反向填充数据进入Result数据*/</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> k = len - <span class="number">1</span>;k&gt;=<span class="number">0</span>;k--)&#123;</span><br><span class="line">    <span class="comment">/*Result[位置] = arr数据*/</span></span><br><span class="line">    Result[Count[arr[k]] - <span class="number">1</span>] = arr[k];</span><br><span class="line">    <span class="comment">/*减少Count数组中保存的计数*/</span></span><br><span class="line">    Count[arr[k]]--;</span><br><span class="line">    <span class="comment">/*显示Result数组每一步详情*/</span></span><br><span class="line">    <span class="built_in">console</span>.log(Result);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.timeEnd(<span class="string">"countingSort waste time:"</span>);</span><br><span class="line">  <span class="keyword">return</span> Result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#计算机基础">
+    <span class="tag-code">计算机基础</span>
+  </a>
+
+  <a href="/tags#算法">
+    <span class="tag-code">算法</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/04/19/css-centering/">
+        <span class="nav-arrow">← </span>
+        
+          Centering in CSS
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/04/21/chorme-plugs/">
+        
+          Chorme插件推荐
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    <!-- 评论系统 START-->
+      <!-- 畅言评论 -->
+      <div id="SOHUCS" sid="常见排序算法"></div> 
+    
+      <!-- No Comment -->
+    
+    <!-- 评论系统 END-->
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#0-概述"><span class="toc-nav-text">0. 概述</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-冒泡排序（Bubble-Sort）"><span class="toc-nav-text">1. 冒泡排序（Bubble Sort）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-快速排序（Quick-Sort）"><span class="toc-nav-text">2. 快速排序（Quick Sort）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-插入排序"><span class="toc-nav-text">3. 插入排序</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-希尔排序"><span class="toc-nav-text">4. 希尔排序</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-选择排序"><span class="toc-nav-text">5. 选择排序</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-归并排序"><span class="toc-nav-text">6. 归并排序</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7-堆排序"><span class="toc-nav-text">7. 堆排序</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-计数排序（Count-Sort）"><span class="toc-nav-text">8. 计数排序（Count Sort）</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://blog.yancongwen.com/2018/04/20/算法初级/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "常见排序算法",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+<script type="text/javascript"> 
+(function(){
+    // 畅言
+    var appid = 'cytStL3tK'; 
+    var conf = 'prod_f38bea1a135accadbdde83654e7d9c10'; 
+    var width = window.innerWidth || document.documentElement.clientWidth; 
+    if (width < 960) { 
+    window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); 
+</script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a><br>
+    &copy;2016-2019 YanCongwen | 豫ICP备17011179号
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

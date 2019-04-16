@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yancongwen&#39;blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      理解 jQuery | 码字仓颉
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>码字仓颉</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>理解 jQuery</h2>
+  <p class="post-date">2017-12-26</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="理解-jQuery"><a href="#理解-jQuery" class="headerlink" title="理解 jQuery"></a>理解 jQuery</h1><h2 id="1、还有必要学习-jQuery-吗"><a href="#1、还有必要学习-jQuery-吗" class="headerlink" title="1、还有必要学习 jQuery 吗"></a>1、还有必要学习 jQuery 吗</h2><p>首先必须肯定的回答：有必要。<br>虽然目前 MVVM 框架很流行，但 jQuery 依然占据一定地位。某些特定场景的项目 jQuery 依然是最好的选择，jQuery 帮助我们解决了太多的兼容性问题，而且对于有一定 JS 基础的人来说学习 jQuery 的成本很低，没必要去掌握全部 API，只要会查文档就可以。虽然新项目中不一定会使用 jQuery ，但是学习 jQuery ，尤其是去阅读 jQuery 源码，理解其设计思想、设计模式，你将会颇有收获。</p>
+<h2 id="2、jQuery-DOM-操作设计思想"><a href="#2、jQuery-DOM-操作设计思想" class="headerlink" title="2、jQuery DOM 操作设计思想"></a>2、jQuery DOM 操作设计思想</h2><p>jQuery 的基本设计思想和主要用法，就是”选择某个网页元素，然后对其进行某种操作”。使用 jQuery 的第一步，往往就是将一个选择表达式，放进构造函数 jQuery()（简写为\$），得到被选中的元素，选中的元素可能是一个，也可能是多个。第二步就是对这些元素进行一系列操作，例如添加 class、移除 class、取值和赋值、移动等。 jQuery 的一大特点就是支持链式操作，即类似于这样<code>$(&#39;div&#39;).find(&#39;h3&#39;).eq(2).html(&#39;Hello&#39;);</code>,将一系列操作连接在一起。它的原理在于每一步的 jQuery 操作，返回的都是一个 jQuery 对象，所以不同操作可以连在一起。</p>
+<h2 id="3、自己实现一个简单的-jQuery"><a href="#3、自己实现一个简单的-jQuery" class="headerlink" title="3、自己实现一个简单的 jQuery"></a>3、自己实现一个简单的 jQuery</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.jQuery = <span class="function"><span class="keyword">function</span>(<span class="params">nodeOrSelector</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> nodes = &#123;&#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> nodeOrSelector === <span class="string">'string'</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> nodeList = <span class="built_in">document</span>.querySelectorAll(nodeOrSelector)</span><br><span class="line">    nodeList.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item, index</span>) </span>&#123;</span><br><span class="line">      nodes[index] = item</span><br><span class="line">    &#125;)</span><br><span class="line">    nodes.length = nodeList.length</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nodeOrSelector <span class="keyword">instanceof</span> Node) &#123;</span><br><span class="line">    nodes = &#123;</span><br><span class="line">      <span class="string">'1'</span>: nodeOrSelector,</span><br><span class="line">      lenght: <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  nodes.addClass = <span class="function"><span class="keyword">function</span>(<span class="params">classNames</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; nodes.length; i++) &#123;</span><br><span class="line">      classNames.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item</span>) </span>&#123;</span><br><span class="line">        nodes[i].classList.add(item)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  nodes.setText = <span class="function"><span class="keyword">function</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; nodes.length; i++) &#123;</span><br><span class="line">      nodeList[i].innerHTML = text</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> nodes</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// alias</span></span><br><span class="line"><span class="built_in">window</span>.$ = jQuery</span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line">$(<span class="string">'ul&gt;li'</span>).addClass([<span class="string">'red'</span>, <span class="string">'blue'</span>])</span><br><span class="line">$(<span class="string">'ul&gt;li'</span>).setText(<span class="string">'Hello jQuery'</span>)</span><br></pre></td></tr></table></figure>
+<p>以上是本人实现的一个简单的 jQuery 对象。该对象接收一个参数，可以是一个已经获取到的 DOM 对象，也可以是一个选择器字符串。jQuery 方法返回的是一个自定义的节点对象，该对象上定义了 addClass、setText 等一系列操作方法。</p>
+<h2 id="4、jQuery-获取-DOM-和-JS-选择器获取的-DOM-的区别与联系"><a href="#4、jQuery-获取-DOM-和-JS-选择器获取的-DOM-的区别与联系" class="headerlink" title="4、jQuery 获取 DOM 和 JS 选择器获取的 DOM 的区别与联系"></a>4、jQuery 获取 DOM 和 JS 选择器获取的 DOM 的区别与联系</h2><p>例如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"x"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> div = <span class="built_in">document</span>.getElementById(<span class="string">'x'</span>)</span><br><span class="line"><span class="keyword">var</span> $div = $(<span class="string">'#x'</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>div 是由原生 API 获取的元素节点对象，<br> <code>div.__proto__ === HTMLDivElement.prototype</code><br> <code>div.__proto__.__proto__ === HTMLElement .prototype</code></li>
+<li>\$div 是 jQuery 对象实例，它包含了从 jQuery 继承过来的很多方法和属性<br><code>$div.__proto__ === jQuery.prototype</code><br> <code>$div.__proto__ .__proto__ === Object.prototype</code></li>
+<li>div 变成 \$div:<br><code>$(div)</code></li>
+<li>\$div 变成 div:<br><code>$div[0] === div</code></li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Javascript">
+    <span class="tag-code">Javascript</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/10/16/跨域及常见解决方案/">
+        <span class="nav-arrow">← </span>
+        
+          跨域及常见解决方案
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/01/08/图解HTTP学习笔记一--网络基础/">
+        
+          图解HTTP学习笔记(一)：网络基础
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    <!-- 评论系统 START-->
+      <!-- 畅言评论 -->
+      <div id="SOHUCS" sid="理解 jQuery"></div> 
+    
+      <!-- No Comment -->
+    
+    <!-- 评论系统 END-->
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#理解-jQuery"><span class="toc-nav-text">理解 jQuery</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1、还有必要学习-jQuery-吗"><span class="toc-nav-text">1、还有必要学习 jQuery 吗</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2、jQuery-DOM-操作设计思想"><span class="toc-nav-text">2、jQuery DOM 操作设计思想</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3、自己实现一个简单的-jQuery"><span class="toc-nav-text">3、自己实现一个简单的 jQuery</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4、jQuery-获取-DOM-和-JS-选择器获取的-DOM-的区别与联系"><span class="toc-nav-text">4、jQuery 获取 DOM 和 JS 选择器获取的 DOM 的区别与联系</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://blog.yancongwen.com/2017/12/26/理解-jQuery/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "理解 jQuery",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+<script type="text/javascript"> 
+(function(){
+    // 畅言
+    var appid = 'cytStL3tK'; 
+    var conf = 'prod_f38bea1a135accadbdde83654e7d9c10'; 
+    var width = window.innerWidth || document.documentElement.clientWidth; 
+    if (width < 960) { 
+    window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); 
+</script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a><br>
+    &copy;2016-2019 YanCongwen | 豫ICP备17011179号
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

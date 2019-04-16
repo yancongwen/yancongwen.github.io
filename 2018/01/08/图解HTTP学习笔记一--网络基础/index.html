@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yancongwen&#39;blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      图解HTTP学习笔记(一)：网络基础 | 码字仓颉
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>码字仓颉</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>图解HTTP学习笔记(一)：网络基础</h2>
+  <p class="post-date">2018-01-08</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><blockquote>
+<p>计算机与网络设备要相互通信，双方就必须基于相同的方法。比如，如何探测到通信目标、由哪一边先发起通信、使用哪种语言进行通信、怎样结束通信等规则都需要事先确定。不同的硬件、操作系统之间的通信，所有的这一切都需要一种规则。而我们就把这种规则称为协议(Protocol)。  </p>
+</blockquote>
+<h2 id="1-TCP-IP-协议族"><a href="#1-TCP-IP-协议族" class="headerlink" title="1. TCP/IP 协议族"></a>1. TCP/IP 协议族</h2><ul>
+<li>TCP/IP 是互联网相关的各类协议族的总称也有说法 认为，TCP/IP 是指 TCP 和 IP 这两种协议。还有一种说法认为，TCP/ IP 是在 IP 协议的通信过程中，使用到的协议族的统称。<br><img src="https://img.yancongwen.cn/18-4-13/56154609.jpg" alt></li>
+</ul>
+<h2 id="2-TCP-IP-的分层管理"><a href="#2-TCP-IP-的分层管理" class="headerlink" title="2. TCP/IP 的分层管理"></a>2. TCP/IP 的分层管理</h2><p>TCP/IP 协议族里重要的一点就是分层。TCP/IP 协议族按层次分别分为以下 4 层：</p>
+<ul>
+<li>应用层<blockquote>
+<p>应用层决定了向用户提供应用服务时通信的活动。<br>  包括：FTP、DNS、HTTP</p>
+</blockquote>
+</li>
+<li>传输层<blockquote>
+<p>传输层对上层应用层，提供处于网络连接中的两台计算机之间的数据传输。<br>  包括：TCP、UDP</p>
+</blockquote>
+</li>
+<li>网络层<blockquote>
+<p>网络层用来处理在网络上流动的数据包。数据包是网络传输的最小数 据单位。该层规定了通过怎样的路径（所谓的传输路线）到达对方计算机，并把数据包传送给对方。<br>  与对方计算机之间通过多台计算机或网络设备进行传输时，网络层所起的作用就是在众多的选项内选择一条传输路线。<br>  包括：IP、</p>
+</blockquote>
+</li>
+<li>数据链路层<blockquote>
+<p>用来处理连接网络的硬件部分。包括控制操作系统、硬件的设备驱动、NIC（Network Interface Card，网络适配器，即网卡），及光纤等物理可见部分（还包括连接器等一切传输媒介）。硬件上的范畴均在 链路层的作用范围之内。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="3-TCP-IP-通信传输流"><a href="#3-TCP-IP-通信传输流" class="headerlink" title="3. TCP/IP 通信传输流"></a>3. TCP/IP 通信传输流</h2><p><img src="https://img.yancongwen.cn/18-4-13/34837843.jpg" alt></p>
+<p>&emsp;&emsp;用 HTTP 举例来说明：</p>
+<blockquote>
+<ul>
+<li>首先作为发送端的客户端在应用层 （HTTP 协议）发出一个想看某个 Web 页面的 HTTP 请求。 </li>
+<li>接着，为了传输方便，在传输层（TCP协议）把从应用层处收到的数据（HTTP请求报文）进行分割，并在各个报文上打上标记序号及端口号后转发给网络层。</li>
+<li>在网络层（IP 协议），增加作为通信目的地的 MAC 地址后转发给链路层。 这样一来，发往网络的通信请求就准备齐全了。</li>
+<li>接收端的服务器在链路层接收到数据，按序往上层发送，一直到应用层。当传输到应用层，才能算真正接收到由客户端发送过来的 HTTP 请求。 发送端在层与层之间传输数据时，每经过一层时必定会被打上一个该层所属的首部信息。反之，接收端在层与层传输数据时，每经过一层 时会把对应的首部消去。 </li>
+</ul>
+</blockquote>
+<p><img src="https://img.yancongwen.cn/18-4-13/80112273.jpg" alt></p>
+<h2 id="4-与-HTTP-关系密切的协议-IP、TCP-和-DNS"><a href="#4-与-HTTP-关系密切的协议-IP、TCP-和-DNS" class="headerlink" title="4. 与 HTTP 关系密切的协议 : IP、TCP 和 DNS"></a>4. 与 HTTP 关系密切的协议 : IP、TCP 和 DNS</h2><h3 id="4-1-负责传输的-IP-协议"><a href="#4-1-负责传输的-IP-协议" class="headerlink" title="4.1 负责传输的 IP 协议"></a>4.1 负责传输的 IP 协议</h3><p>&emsp;&emsp;按层次分，IP（Internet Protocol）网际协议位于网络层。Internet Protocol 这个名称可能听起来有点夸张，但事实正是如此，因为几乎所有使用网络的系统都会用到 IP 协议。TCP/IP协议族中的IP指的就是网际协议，协议名称中占据了一半位置，其重要性可见一斑。可能 有人会把“IP”和“IP 地址”搞混，“IP”是协议的名称。<br>&emsp;&emsp;IP 协议的作用是把各种数据包传送给对方。而要保证确实传送到对方那里，则需要满足各类条件。其中两个重要的条件是 IP 地址和 MAC 地址（Media Access Control Address）。<br>IP 地址指明了节点被分配到的地址，MAC 地址是指网卡所属的固定地址。IP 地址可以和 MAC 地址进行配对。IP 地址可变，但 MAC 地址基本不会。<br>&emsp;&emsp;IP 间的通信依赖MAC地址。在网络上，通信的双方在同一局域网（LAN）内的情况是很少的，通常是经过多台计算机和网络设备中转才能连接到对方。而在进行中转时，会利用下一站中转设备的 MAC地址来搜索下一个中转目标。这时，会采用 ARP 协议（Address Resolution Protocol）。ARP是一种用以解析地址的协议，根据通信方的 IP 地址就可以反查出对应的 MAC 地址。<br>&emsp;&emsp;在到达通信目标前的中转过程中，那些计算机和路由器等网设备只能获悉很粗略的传输路线。这种机制称为路由选择（routing），有点像快递公司的送货过程。想要寄快递的人，只要将自己的货物送到集散中心，就可以知道快递公司是否肯收件发货，该快递公司的集散中心检查货物的送达地址，明确下站该送往哪个区域的集散中心。接着，那个区域的集散中心自会判断是否能送到对方的家中。<br><img src="https://img.yancongwen.cn/18-4-13/38544539.jpg" alt></p>
+<h3 id="4-2-确保可靠性的-TCP-协议"><a href="#4-2-确保可靠性的-TCP-协议" class="headerlink" title="4.2 确保可靠性的 TCP 协议"></a>4.2 确保可靠性的 TCP 协议</h3><p>&emsp;&emsp;按层次分，TCP 位于传输层，提供可靠的字节流服务。<br>&emsp;&emsp;<strong>字节流服务</strong>：为了方便传输，将大块数据分割成以报文段为单位的数据包进行管理。<br>&emsp;&emsp;<strong>可靠</strong>：TCP 协议能够确认数据最终是否送达到对方。<br>为了准确无误地将数据送达目标处，TCP 协议建立连接时采用<strong>三次握手</strong> （three-way handshaking）策略。发送端首先发送一个带 SYN 标志的数据包给对方。接收端收到后， 回传一个带有 SYN/ACK 标志的数据包以示传达确认信息。最后，发送端再回传一个带 ACK 标志的数据包，完成三次握手，客户端与服务器开始传送数据。<br><img src="https://img.yancongwen.cn/18-4-13/2720894.jpg" alt><br>&emsp;&emsp;数据传输完成后，采用<strong>四次挥手</strong>策略关闭TCP连接。第一步，当主机A的应用程序通知TCP数据已经发送完毕时，TCP向主机B发送一个带有FIN附加标记的报文段（FIN表示英文finish）。第二步，主机B收到这个FIN报文段之后，并不立即用FIN报文段回复主机A，而是先向主机A发送一个确认序号ACK，同时通知自己相应的应用程序：对方要求关闭连接（先发送ACK的目的是为了防止在这段时间内，对方重传FIN报文段）。第三步，主机B的应用程序告诉TCP：我要彻底的关闭连接，TCP向主机A送一个FIN报文段。第四步，主机A收到这个FIN报文段后，向主机B发送一个ACK表示连接彻底释放。<br><img src="https://img.yancongwen.cn/18-4-13/76093235.jpg" alt>   </p>
+<h3 id="4-3-负责域名解析的-DNS-服务"><a href="#4-3-负责域名解析的-DNS-服务" class="headerlink" title="4.3 负责域名解析的 DNS 服务"></a>4.3 负责域名解析的 DNS 服务</h3><p>&emsp;&emsp;DNS（Domain Name System）服务是和 HTTP 协议一样位于应用层的协议。它提供域名到 IP 地址之间的解析服务。DNS 协议提供通过域名查找 IP 地址，或逆向从 IP 地址反查域名的服务。<br><img src="https://img.yancongwen.cn/18-4-13/15374486.jpg" alt></p>
+<h2 id="5-各种协议与-HTTP-协议的关系"><a href="#5-各种协议与-HTTP-协议的关系" class="headerlink" title="5. 各种协议与 HTTP 协议的关系"></a>5. 各种协议与 HTTP 协议的关系</h2><p><img src="https://img.yancongwen.cn/18-4-13/16491227.jpg" alt></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#计算机网络">
+    <span class="tag-code">计算机网络</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/12/26/理解-jQuery/">
+        <span class="nav-arrow">← </span>
+        
+          理解 jQuery
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/01/08/图解HTTP学习笔记二--URI和URL/">
+        
+          图解HTTP学习笔记(二)：URI和URL
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    <!-- 评论系统 START-->
+      <!-- 畅言评论 -->
+      <div id="SOHUCS" sid="图解HTTP学习笔记(一)：网络基础"></div> 
+    
+      <!-- No Comment -->
+    
+    <!-- 评论系统 END-->
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-TCP-IP-协议族"><span class="toc-nav-text">1. TCP/IP 协议族</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-TCP-IP-的分层管理"><span class="toc-nav-text">2. TCP/IP 的分层管理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-TCP-IP-通信传输流"><span class="toc-nav-text">3. TCP/IP 通信传输流</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-与-HTTP-关系密切的协议-IP、TCP-和-DNS"><span class="toc-nav-text">4. 与 HTTP 关系密切的协议 : IP、TCP 和 DNS</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-1-负责传输的-IP-协议"><span class="toc-nav-text">4.1 负责传输的 IP 协议</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-2-确保可靠性的-TCP-协议"><span class="toc-nav-text">4.2 确保可靠性的 TCP 协议</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-3-负责域名解析的-DNS-服务"><span class="toc-nav-text">4.3 负责域名解析的 DNS 服务</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-各种协议与-HTTP-协议的关系"><span class="toc-nav-text">5. 各种协议与 HTTP 协议的关系</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://blog.yancongwen.com/2018/01/08/图解HTTP学习笔记一--网络基础/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "图解HTTP学习笔记(一)：网络基础",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+<script type="text/javascript"> 
+(function(){
+    // 畅言
+    var appid = 'cytStL3tK'; 
+    var conf = 'prod_f38bea1a135accadbdde83654e7d9c10'; 
+    var width = window.innerWidth || document.documentElement.clientWidth; 
+    if (width < 960) { 
+    window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); 
+</script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a><br>
+    &copy;2016-2019 YanCongwen | 豫ICP备17011179号
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

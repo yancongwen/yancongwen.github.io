@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yancongwen&#39;blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      HTTP 网络请求参数中带有特殊符号相关问题 | 码字仓颉
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>码字仓颉</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>HTTP 网络请求参数中带有特殊符号相关问题</h2>
+  <p class="post-date">2018-10-21</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="HTTP-网络请求参数中带有特殊符号相关问题"><a href="#HTTP-网络请求参数中带有特殊符号相关问题" class="headerlink" title="HTTP 网络请求参数中带有特殊符号相关问题"></a>HTTP 网络请求参数中带有特殊符号相关问题</h1><h2 id="1、GET-请求参数中带有空格"><a href="#1、GET-请求参数中带有空格" class="headerlink" title="1、GET 请求参数中带有空格"></a>1、GET 请求参数中带有空格</h2><p>请求参数中带有空格会被处理为<code>+</code>号。这是<code>HTML4</code>标准中定义的，请看这里<a href="https://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1" target="_blank" rel="noopener">Form content types</a>。<br>在<code>HTTP</code>请求头中，首部字段<code>Content-type</code>用于指示资源的MIME类型，规定了提交表单元素时对数据的处理方式。下面是几个常见的值：<br>1.text/html<br>2.text/plain<br>3.text/css<br>4.text/javascript<br>5.application/x-www-form-urlencoded<br>6.multipart/form-data<br>7.application/json<br>8.application/xml<br>…<br>其中<code>application/x-www-form-urlencoded</code>是默认值，使用该值时，提交表单时内容会按照如下规则编码：空格转换为<code>+</code>号；非法字符转换为类似于<code>%E0</code>的两位16进制表示的ASCII码；换行符被转换为<code>CR LF</code>；数据项名称和数据值以<code>=</code>号分割，数据项与数据项之间以<code>&amp;</code>分割；…….<br>按照以上规则，在<code>GET</code>请求中，我们的请求参数会按照以上编码规则进行编码，然后拼接到请求<code>URL</code>后面。<br>例如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123; </span><br><span class="line">  type： <span class="string">'GET'</span>,</span><br><span class="line">  url: <span class="string">"http://ip:port/count"</span>,</span><br><span class="line">  data: &#123; <span class="attr">app</span>: <span class="string">'互联网 举证'</span> &#125;,</span><br><span class="line">  success: <span class="function"><span class="keyword">function</span>(<span class="params">response</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(response)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>当我们发起以上请求时，请求参数会进行转码后拼接在 <code>url</code> 后面，空格被转换为了<code>+</code>号，真正的请求 <code>URI</code> 为 <code>http://ip:port/count?app=app=%E4%BA%92%E8%81%94%E7%BD%91+%E4%B8%BE%E8%AF%81</code><br><img src="https://img.yancongwen.cn/18-10-20/32458749.jpg" alt><br>当我们直接在浏览器地址栏中输入请求地址，如下图（<code>%20</code>就是输入的空格），浏览器就会去请求你输入的地址，而不会再将特殊字符转码。但是会将中文转码。（其实相当于执行了JS中的<code>encodeURI</code>）<br><img src="https://img.yancongwen.cn/18-10-20/2972838.jpg" alt></p>
+<h2 id="2、GET-请求参数中带有-号"><a href="#2、GET-请求参数中带有-号" class="headerlink" title="2、GET 请求参数中带有 + 号"></a>2、GET 请求参数中带有 + 号</h2><p><code>+</code> 号和汉字一样，会被转码，转码后为 <code>%2B</code>。例如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123; </span><br><span class="line">  type： <span class="string">'GET'</span>,</span><br><span class="line">  url: <span class="string">"http://ip:port/count"</span>,</span><br><span class="line">  data: &#123; <span class="attr">app</span>: <span class="string">'互联网+举证'</span> &#125;,</span><br><span class="line">  success: <span class="function"><span class="keyword">function</span>(<span class="params">response</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(response)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>当我们发起以上请求时，请求参数会进行转码后拼接在 <code>url</code> 后面，<code>+</code>号被转为<code>%2B</code>,真正的请求 <code>URI</code> 为 <code>http://ip:port/count?app=%E4%BA%92%E8%81%94%E7%BD%91%2B%E4%B8%BE%E8%AF%81</code><br><img src="https://img.yancongwen.cn/18-10-20/89868941.jpg" alt><br>直接在浏览器地址栏中输入请求地址，参数中带有<code>+</code>号，真实请求中就会保留<code>+</code>号。<br><img src="https://img.yancongwen.cn/18-10-20/94235014.jpg" alt></p>
+<p>请细细品味这这几个示例的区别。</p>
+<h2 id="3、JavaScript中的-URI-编码解码方法"><a href="#3、JavaScript中的-URI-编码解码方法" class="headerlink" title="3、JavaScript中的 URI 编码解码方法"></a>3、JavaScript中的 URI 编码解码方法</h2><ul>
+<li><p>encodeURI<br>  该方法用于将一个<strong>完整</strong>的URI编码，该方法不会对那些保留的并且在URI中有特殊意思的字符进行编码；</p>
+</li>
+<li><p>decodeURI<br>  该方法解码一个由<code>encodeURI</code>先前创建的统一资源标识符（URI）；</p>
+</li>
+<li><p>encodeURIComponent<br>  对统一资源标识符（URI）的<strong>组成部分</strong>进行编码的方法。转义除了字母、数字、<code>(</code>、<code>)</code>、<code>.</code>、<code>!</code>、<code>~</code>、<code>*</code>、<code>&#39;</code>、<code>-</code>和<code>_</code>之外的所有字符。<br>  <strong>对于 <code>application/x-www-form-urlencoded</code> (POST) 这种数据方式，空格需要被替换成 ‘+’，所以通常使用 <code>encodeURIComponent</code> 的时候还会把 “%20” 替换为 “+”。<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent" target="_blank" rel="noopener">参考</a></strong></p>
+</li>
+<li><p>decodeURIComponent<br>  用于解码由<code>encodeURIComponent</code>或者其它类似方法编码的部分统一资源标识符（URI）。</p>
+</li>
+</ul>
+<p><img src="https://img.yancongwen.cn/18-10-20/22263377.jpg" alt></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/10/21/jquery/">
+        <span class="nav-arrow">← </span>
+        
+          理解 jQuery
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/11/12/CSS-设置滚动条样式/">
+        
+          CSS 设置滚动条样式
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    <!-- 评论系统 START-->
+      <!-- 畅言评论 -->
+      <div id="SOHUCS" sid="HTTP 网络请求参数中带有特殊符号相关问题"></div> 
+    
+      <!-- No Comment -->
+    
+    <!-- 评论系统 END-->
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HTTP-网络请求参数中带有特殊符号相关问题"><span class="toc-nav-text">HTTP 网络请求参数中带有特殊符号相关问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1、GET-请求参数中带有空格"><span class="toc-nav-text">1、GET 请求参数中带有空格</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2、GET-请求参数中带有-号"><span class="toc-nav-text">2、GET 请求参数中带有 + 号</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3、JavaScript中的-URI-编码解码方法"><span class="toc-nav-text">3、JavaScript中的 URI 编码解码方法</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://blog.yancongwen.com/2018/10/21/http网络请求参数中带有特殊符号相关问题/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "HTTP 网络请求参数中带有特殊符号相关问题",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+<script type="text/javascript"> 
+(function(){
+    // 畅言
+    var appid = 'cytStL3tK'; 
+    var conf = 'prod_f38bea1a135accadbdde83654e7d9c10'; 
+    var width = window.innerWidth || document.documentElement.clientWidth; 
+    if (width < 960) { 
+    window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); 
+</script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a><br>
+    &copy;2016-2019 YanCongwen | 豫ICP备17011179号
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

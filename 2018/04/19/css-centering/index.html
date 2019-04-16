@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yancongwen&#39;blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Centering in CSS | 码字仓颉
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>码字仓颉</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Centering in CSS</h2>
+  <p class="post-date">2018-04-19</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><blockquote>
+<p>本文翻译自 CSS-Tricks 中的一篇文章—— <a href="https://css-tricks.com/centering-css-complete-guide/" target="_blank" rel="noopener">Centering in CSS: A Complete Guide</a>，CSS居中完全指南，其中有部分删改。</p>
+</blockquote>
+<p>&emsp;&emsp;Centering things in CSS is the poster child of CSS complaining. Why does it have to be so hard? They jeer. I think the issue isn’t that it’s difficult to do, but in that there so many different ways of doing it, depending on the situation, it’s hard to know which to reach for.<br>&emsp;&emsp;居中是一种很常见的布局方式。有人抱怨CSS居中布局很难，其实不然，在我看来，说居中布局难，不是因为居中真的有多么难实现，而是因为实现居中的方法有太多太多，以至于新手总是纠结去用哪个。我们需要根据不同的场景，去选择合适的方法。<br>&emsp;&emsp;本文将CSS居中布局方法进行归类，以便于理解和简化居中问题。</p>
+<h2 id="1-水平居中"><a href="#1-水平居中" class="headerlink" title="1.水平居中"></a>1.水平居中</h2><h3 id="1-1-行内元素"><a href="#1-1-行内元素" class="headerlink" title="1.1 行内元素"></a>1.1 行内元素</h3><p>行内元素直接为其父元素设置文本居中即可。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.center-children</span> &#123;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="http://codepen.io/chriscoyier/pen/HulzB" target="_blank" rel="noopener">https://codepen.io/chriscoyier/pen/HulzB</a></p>
+<h3 id="1-2-块级元素"><a href="#1-2-块级元素" class="headerlink" title="1.2 块级元素"></a>1.2 块级元素</h3><p>块级元素直接设置左右边距为 auto 即可，前提是该块级元素必需有 width ，而且必需处于标准文档流中，浮动、绝对定位、固定定位了的元素就不能。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.center-me</span> &#123;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">0</span> auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="http://codepen.io/chriscoyier/pen/eszon" target="_blank" rel="noopener">https://codepen.io/chriscoyier/pen/eszon</a></p>
+<h3 id="1-3-多个块级元素"><a href="#1-3-多个块级元素" class="headerlink" title="1.3 多个块级元素"></a>1.3 多个块级元素</h3><ul>
+<li>多个块元素在一行内居中<ul>
+<li>方法一：父元素设置 text-align: center ，子元素设置 display: inline-block；     </li>
+<li>方法二：使用 flex 布局，父元素设置 display: flex; justify-content: center;</li>
+</ul>
+</li>
+</ul>
+<p><iframe src="https://codepen.io/chriscoyier/embed/ebing" width="100%" height="305" frameborder="0"></iframe></p>
+<ul>
+<li>多个块元素在一列内居中<br>如果只是需要让多个块级元素整体水平居中，并且按默认的方式纵向排列，那直接设置左右边距为 auto 即可。</li>
+</ul>
+<p><iframe src="https://codepen.io/chriscoyier/embed/haCGt" width="100%" height="305" frameborder="0"></iframe></p>
+<h2 id="2-垂直居中"><a href="#2-垂直居中" class="headerlink" title="2. 垂直居中"></a>2. 垂直居中</h2><h3 id="2-1-行内元素"><a href="#2-1-行内元素" class="headerlink" title="2.1 行内元素"></a>2.1 行内元素</h3><ul>
+<li>单行居中<ul>
+<li>设置行高与元素的高度相同<br><a href="https://codepen.io/chriscoyier/pen/LxHmK" target="_blank" rel="noopener">https://codepen.io/chriscoyier/pen/LxHmK</a></li>
+<li>为行内元素/文本元素设置相等的上下内边距<br><a href="https://codepen.io/chriscoyier/pen/ldcwq" target="_blank" rel="noopener">https://codepen.io/chriscoyier/pen/ldcwq</a></li>
+</ul>
+</li>
+<li>多行居中<ul>
+<li>设置相等的上下内边距</li>
+<li>vertical-align 属性来实现垂直居中<br>  <a href="https://codepen.io/chriscoyier/pen/ekoFx" target="_blank" rel="noopener">https://codepen.io/chriscoyier/pen/ekoFx</a></li>
+<li>flexbox<br><a href="https://codepen.io/chriscoyier/pen/uHygv" target="_blank" rel="noopener">https://codepen.io/chriscoyier/pen/uHygv</a><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-center-vertically</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="attribute">flex-direction</span>: column;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">400px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2-块级元素"><a href="#2-2-块级元素" class="headerlink" title="2.2 块级元素"></a>2.2 块级元素</h3><ul>
+<li><p>元素高度已知</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.child</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">margin-top</span>: -<span class="number">50px</span>; <span class="comment">/* account for padding and border if not using box-sizing: border-box; */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  <a href="https://codepen.io/chriscoyier/pen/HiydJ" target="_blank" rel="noopener">https://codepen.io/chriscoyier/pen/HiydJ</a></p>
+</li>
+<li><p><strong>元素高度未知</strong>（最常见的一种场景）</p>
+<ul>
+<li><p>方法一：先将元素相对于其原始位置向下移动父元素高度的一半距离，再将该元素相对其本身的高度向上移动一半，这样就能实现垂直居中的效果了。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.child</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">translateY</span>(-50%);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  <a href="https://codepen.io/chriscoyier/pen/lpema" target="_blank" rel="noopener">https://codepen.io/chriscoyier/pen/lpema</a></p>
+</li>
+<li><p>方法二：flexbox</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">flex-direction</span>: column;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  <a href="https://codepen.io/chriscoyier/pen/FqDyi" target="_blank" rel="noopener">https://codepen.io/chriscoyier/pen/FqDyi</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-垂直和水平都居中"><a href="#3-垂直和水平都居中" class="headerlink" title="3. 垂直和水平都居中"></a>3. 垂直和水平都居中</h2><p>当然，我们可以结合以上给出的方法来实现垂直和水平方向都居中的布局。这里我们再进行一下分类总结。</p>
+<h3 id="3-1-宽高固定"><a href="#3-1-宽高固定" class="headerlink" title="3.1 宽高固定"></a>3.1 宽高固定</h3><p>将元素相对于其父元素的宽度/高度值向右并向下移动一半的距离，然后再通过设置负边距值的方法，将元素相对于其自身的宽度/高度值向左并向上移动一半的距离，就可实现水平垂直均居中的效果了。并且这种方法的浏览器兼容性是很好的。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.child</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">20px</span>;</span><br><span class="line"></span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line"></span><br><span class="line">  <span class="attribute">margin</span>: -<span class="number">70px</span> <span class="number">0</span> <span class="number">0</span> -<span class="number">170px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://codepen.io/chriscoyier/pen/JGofm" target="_blank" rel="noopener">https://codepen.io/chriscoyier/pen/JGofm</a></p>
+<h3 id="3-2-宽高不固定"><a href="#3-2-宽高不固定" class="headerlink" title="3.2 宽高不固定"></a>3.2 宽高不固定</h3><p>如果元素的宽度或者高度未知，则在将元素相对于父元素的宽高往向右并向下移动一半距离后，再用 <code>transform</code> 属性来将其向左并向上移动自身宽度及高度值一半的距离即可。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.child</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">translate</span>(-50%, -50%);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://codepen.io/chriscoyier/pen/lgFiq" target="_blank" rel="noopener">https://codepen.io/chriscoyier/pen/lgFiq</a></p>
+<h3 id="3-3-使用-flexbox"><a href="#3-3-使用-flexbox" class="headerlink" title="3.3 使用 flexbox"></a>3.3 使用 flexbox</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://codepen.io/chriscoyier/pen/msItD" target="_blank" rel="noopener">https://codepen.io/chriscoyier/pen/msItD</a></p>
+<h3 id="3-4-使用-grid"><a href="#3-4-使用-grid" class="headerlink" title="3.4 使用 grid"></a>3.4 使用 grid</h3><p>这只是一个小技巧，只适用于一个元素的情况。</p>
+<p><iframe src="https://codepen.io/chriscoyier/embed/NvwpyK" width="100%" height="305" frameborder="0"></iframe></p>
+<h2 id="4-结束语"><a href="#4-结束语" class="headerlink" title="4. 结束语"></a>4. 结束语</h2><p>CSS 还是很伟大的，能够实现的布局多种多样，实现的方法也多种多样，重要的是找到合适的方法！这就需要多写多练多总结！</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#CSS">
+    <span class="tag-code">CSS</span>
+  </a>
+
+  <a href="/tags#译文">
+    <span class="tag-code">译文</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/04/16/节流与防抖/">
+        <span class="nav-arrow">← </span>
+        
+          节流与防抖
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/04/20/算法初级/">
+        
+          常见排序算法
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    <!-- 评论系统 START-->
+      <!-- 畅言评论 -->
+      <div id="SOHUCS" sid="Centering in CSS"></div> 
+    
+      <!-- No Comment -->
+    
+    <!-- 评论系统 END-->
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-水平居中"><span class="toc-nav-text">1.水平居中</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-1-行内元素"><span class="toc-nav-text">1.1 行内元素</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-2-块级元素"><span class="toc-nav-text">1.2 块级元素</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-3-多个块级元素"><span class="toc-nav-text">1.3 多个块级元素</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-垂直居中"><span class="toc-nav-text">2. 垂直居中</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-1-行内元素"><span class="toc-nav-text">2.1 行内元素</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-块级元素"><span class="toc-nav-text">2.2 块级元素</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-垂直和水平都居中"><span class="toc-nav-text">3. 垂直和水平都居中</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-1-宽高固定"><span class="toc-nav-text">3.1 宽高固定</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-2-宽高不固定"><span class="toc-nav-text">3.2 宽高不固定</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-使用-flexbox"><span class="toc-nav-text">3.3 使用 flexbox</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-使用-grid"><span class="toc-nav-text">3.4 使用 grid</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-结束语"><span class="toc-nav-text">4. 结束语</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://blog.yancongwen.com/2018/04/19/css-centering/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Centering in CSS",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+<script type="text/javascript"> 
+(function(){
+    // 畅言
+    var appid = 'cytStL3tK'; 
+    var conf = 'prod_f38bea1a135accadbdde83654e7d9c10'; 
+    var width = window.innerWidth || document.documentElement.clientWidth; 
+    if (width < 960) { 
+    window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); 
+</script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a><br>
+    &copy;2016-2019 YanCongwen | 豫ICP备17011179号
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

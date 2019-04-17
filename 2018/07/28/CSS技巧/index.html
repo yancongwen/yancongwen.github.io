@@ -154,11 +154,14 @@
 <li>行内元素</li>
 <li>块级元素</li>
 </ul>
-<h3 id="2、盒模型"><a href="#2、盒模型" class="headerlink" title="2、盒模型"></a>2、盒模型</h3><ul>
-<li>padding</li>
-<li>border</li>
-<li>margin</li>
+<h3 id="2、盒模型"><a href="#2、盒模型" class="headerlink" title="2、盒模型"></a>2、盒模型</h3><p>盒模型的组成大家肯定都懂，由里向外content,padding,border,margin。盒模型是有两种标准的，一个是标准模型，一个是IE模型。</p>
+<ul>
+<li><p>标准盒模型<br>元素宽高 = content 宽高</p>
+</li>
+<li><p>IE 盒模型<br>元素宽高 = content宽高 + padding + border</p>
+</li>
 </ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 标准模型，默认值 */</span></span><br><span class="line"><span class="selector-tag">box-sizing</span><span class="selector-pseudo">:content-box</span>;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/*IE模型，推荐*/</span></span><br><span class="line"><span class="selector-tag">box-sizing</span><span class="selector-pseudo">:border-box</span>;</span><br></pre></td></tr></table></figure>
 <h3 id="3、定位-position"><a href="#3、定位-position" class="headerlink" title="3、定位 position"></a>3、定位 position</h3><ul>
 <li>static<br>默认，没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）。     </li>
 <li>relative<br>相对定位，元素先放置在未添加定位时的位置，再在不改变页面布局的前提下调整元素位置（因此会在此元素原始位置留下空白）</li>
